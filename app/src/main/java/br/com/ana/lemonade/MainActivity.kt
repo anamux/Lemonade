@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -24,7 +25,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import br.com.ana.lemonade.ui.theme.LemonadeTheme
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,31 +56,77 @@ fun Lemonade() {
             .wrapContentSize(Alignment.Center)
     )
 }
+
 @Composable
-fun ImageAndText(modifier: Modifier = Modifier ) {
+fun ImageAndText(modifier: Modifier = Modifier) {
     var result by remember { mutableStateOf(1) }
+    var clickRequired by remember { mutableStateOf(0) }
+    var clickCount by remember { mutableStateOf(0) }
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = { result = (1) }) {
+        Button(onClick = {
+            when (result) {
+                1 -> {
+                    result = 2
+                    clickRequired = generateRandomClicks()
+                }
+                2 -> {
+                    clickCount++
+                    if (clickCount >= clickRequired) {
+                        result = 3
+                        clickCount = 0
+                    }
+                }
+                3 -> result = 4
+                else -> {
+                    result = 1
+                    clickCount = 0
+                }
+            }
+        }) {
             Image(
-                painter = painterResource(R.drawable.lemon_tree),
-                contentDescription = stringResource(R.string.lemon_tree_content_description)
+                painter = painterResource(
+                    when (result) {
+                        1 -> R.drawable.lemon_tree
+                        2 -> R.drawable.lemon_squeeze
+                        3 -> R.drawable.lemon_drink
+                        else -> R.drawable.lemon_restart
+
+                    }
+                ),
+                contentDescription = stringResource(
+                    when (result) {
+                        1 -> R.string.lemon_tree_content_description
+                        2 -> R.string.lemon_content_description
+                        3 -> R.string.glass_content_description
+                        else -> R.string.empty_glass_content_description
+                    }
+
+                )
             )
-            
+
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(text = stringResource(R.string.tap_tree))
+        Spacer(modifier = Modifier.height(16.dp).padding(8.dp))
+        Text(
+            text = stringResource(if (result == 1) R.string.tap_tree else R.string.tap_to_squeeze),
+            fontSize = 18.sp
+        )
 
     }
+}
+
+fun generateRandomClicks(): Int {
+    return Random.nextInt(2,5)
+
 }
 
 @Preview(
     showBackground = true,
     showSystemUi = true
-    )
+)
 @Composable
 fun GreetingPreview() {
     LemonadeTheme {
