@@ -111,7 +111,14 @@ fun ImageAndText(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(16.dp).padding(8.dp))
         Text(
-            text = stringResource(if (result == 1) R.string.tap_tree else R.string.tap_to_squeeze),
+            text = stringResource(
+                when (result){
+                    1 -> R.string.tap_tree
+                    2 -> R.string.tap_to_squeeze
+                    3 -> R. string.tap_to_drink
+                    else -> R.string.tap_to_start
+                }
+            ),
             fontSize = 18.sp
         )
 
