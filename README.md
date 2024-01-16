@@ -8,4 +8,9 @@ After the lemon is squeezed, a glass of lemonade will appear with the text "Tap 
 
 The user needs to tap the empty glass again to restart the application flow.
 
+----
+
+<div align="center">
+
 ![image](https://github.com/anamux/Lemonade/assets/50466947/cb0dcf20-00d0-4292-852b-fbf6b2645257)
+</div>
