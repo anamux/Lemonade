@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,9 +60,9 @@ fun Lemonade() {
 
 @Composable
 fun ImageAndText(modifier: Modifier = Modifier) {
-    var result by remember { mutableStateOf(1) }
-    var clickRequired by remember { mutableStateOf(0) }
-    var clickCount by remember { mutableStateOf(0) }
+    var result by rememberSaveable { mutableStateOf(1) }
+    var clickRequired by rememberSaveable { mutableStateOf(0) }
+    var clickCount by rememberSaveable { mutableStateOf(0) }
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -109,7 +110,9 @@ fun ImageAndText(modifier: Modifier = Modifier) {
 
         }
 
-        Spacer(modifier = Modifier.height(16.dp).padding(8.dp))
+        Spacer(modifier = Modifier
+            .height(16.dp)
+            .padding(8.dp))
         Text(
             text = stringResource(
                 when (result){
